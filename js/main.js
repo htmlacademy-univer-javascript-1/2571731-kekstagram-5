@@ -1,0 +1,72 @@
+const OBJECT_COUNT = 25;
+
+const messages = ['Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
+
+const names = ['Иван', 'Настя', 'Андрей', 'Сергей', 'Лена', 'Михаил'];
+
+const descriptions = ['Хорошее место',
+  'Райское наслаждение',
+  'Незабываемые эмоции',
+  'Просто чудо',
+  'Это фантастика',
+  'Просто невероятно'];
+
+const getRandomInteger = (a, b) => {
+  const lower = Math.ceil(Math.min(a, b));
+  const upper = Math.floor(Math.max(a, b));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+};
+
+const COMMENT_COUNT = getRandomInteger(0, 30);
+
+const createUniqueRandomNumberList = (min, max, length) => {
+  const previousNumbers = [];
+  while (previousNumbers.length < length) {
+    let currentValue = getRandomInteger(min, max);
+    while (previousNumbers.includes(currentValue)) {
+      currentValue = getRandomInteger(min, max);
+    }
+    previousNumbers.push(currentValue);
+  }
+  return previousNumbers;
+};
+
+const getUniqueNumber = (list, usedNumbers) => {
+  for (let i = 0; i < list.length; i++){
+    if (usedNumbers.includes(list[i]) === false){
+      usedNumbers.push(list[i]);
+      return list[i];
+    }
+  }
+};
+
+const usedObjectId = [];
+const usedCommentId = [];
+const usedUrl = [];
+const objectIdList = createUniqueRandomNumberList(1, OBJECT_COUNT, OBJECT_COUNT);
+const commentIdList = createUniqueRandomNumberList(1, 999, COMMENT_COUNT);
+const objectUrlList = createUniqueRandomNumberList(1, OBJECT_COUNT, OBJECT_COUNT);
+
+const createComment = () => ({
+  id: getUniqueNumber(commentIdList, usedCommentId),
+  avatar: `img/avatar-${ String(getRandomInteger(1, 6)) }.svg`,
+  message: messages[getRandomInteger(0, 5)],
+  name: names[getRandomInteger(0, 5)],
+});
+
+const createObject = () => ({
+  id: getUniqueNumber(objectIdList, usedObjectId),
+  url: `photos/${ String(getUniqueNumber(objectUrlList, usedUrl)) }.jpg`,
+  description: descriptions[getRandomInteger(0, 5)],
+  likes: getRandomInteger(15, 200),
+  comments: createComment,
+});
+
+const objects = Array.from({length: OBJECT_COUNT}, createObject);
+objects.at();
