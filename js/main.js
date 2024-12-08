@@ -1,2 +1,1 @@
-import { objects } from './data.js';
-objects.at();
+import './pictures.js';
