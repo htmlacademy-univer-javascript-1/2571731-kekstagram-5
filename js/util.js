@@ -1,6 +1,6 @@
+const ALERT_SHOW_TIME = 5000;
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const successButton = successTemplate.querySelector('.success__button');
-const ALERT_SHOW_TIME = 5000;
 const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 const createUniqueRandomNumberList = (min, max, length) => {
