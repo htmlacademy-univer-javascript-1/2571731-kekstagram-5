@@ -18,7 +18,9 @@ const descriptions = ['Хорошее место',
   'Это фантастика',
   'Просто невероятно'];
 
-const COMMENT_COUNT = getRandomInteger(0, 30);
+const MIN_COMMENT_COUNT = 20;
+const MAX_COMMENT_COUNT = 30;
+const COMMENT_COUNT = getRandomInteger(MIN_COMMENT_COUNT, MAX_COMMENT_COUNT);
 
 const usedObjectId = [];
 const usedCommentId = [];
@@ -39,7 +41,7 @@ const createObject = () => ({
   url: `photos/${ String(getUniqueNumber(objectUrlList, usedUrl)) }.jpg`,
   description: descriptions[getRandomInteger(0, 5)],
   likes: getRandomInteger(15, 200),
-  comments: Array.from({ length: getRandomInteger(0, COMMENT_COUNT) }, createComment),
+  comments: Array.from({ length: getRandomInteger(MIN_COMMENT_COUNT, COMMENT_COUNT) }, createComment),
 });
 
 const objects = Array.from({length: OBJECT_COUNT}, createObject);
