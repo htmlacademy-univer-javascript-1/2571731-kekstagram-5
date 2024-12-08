@@ -10,15 +10,14 @@ const createPicture = (data) => {
   picture.querySelector('.picture__img').src = url;
   picture.querySelector('.picture__likes').textContent = likes;
   picture.querySelector('.picture__comments').textContent = comments.length;
+
   return picture;
 };
 
 const renderPictures = (pictures) => {
-  container.querySelectorAll('.picture').forEach((picture) => picture.remove());
   const fragment = document.createDocumentFragment();
   pictures.forEach((picture) => {
-    const newPicture = createPicture(picture);
-    fragment.append(newPicture);
+    fragment.append(createPicture(picture));
   });
   container.append(fragment);
 };

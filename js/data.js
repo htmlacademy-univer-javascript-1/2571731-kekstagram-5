@@ -39,7 +39,7 @@ const createObject = () => ({
   url: `photos/${ String(getUniqueNumber(objectUrlList, usedUrl)) }.jpg`,
   description: descriptions[getRandomInteger(0, 5)],
   likes: getRandomInteger(15, 200),
-  comments: createComment,
+  comments: Array.from({ length: getRandomInteger(0, COMMENT_COUNT) }, createComment),
 });
 
 const objects = Array.from({length: OBJECT_COUNT}, createObject);
