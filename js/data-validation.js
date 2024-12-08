@@ -1,12 +1,12 @@
 import { isElementRepeat } from './util.js';
 
-const form = document.querySelector('.img-upload__form');
-const hashtags = document.querySelector('.text__hashtags');
-const comment = document.querySelector('.text__description');
 const MAX_HASHTAG_COUNT = 5;
 const MIN_HASHTAG_LENGTH = 2;
 const MAX_HASHTAG_LENGTH = 20;
 const MAX_LENGTH_COMMENT = 140;
+const form = document.querySelector('.img-upload__form');
+const hashtags = document.querySelector('.text__hashtags');
+const comment = document.querySelector('.text__description');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
