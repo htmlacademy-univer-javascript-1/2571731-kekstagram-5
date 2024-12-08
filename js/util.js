@@ -1,9 +1,4 @@
-const getRandomInteger = (a, b) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
+const getRandomInteger = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 const createUniqueRandomNumberList = (min, max, length) => {
   const previousNumbers = [];
@@ -26,8 +21,11 @@ const getUniqueNumber = (list, usedNumbers) => {
   }
 };
 
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
 export {
   getRandomInteger,
   createUniqueRandomNumberList,
-  getUniqueNumber
+  getUniqueNumber,
+  isEscapeKey
 };

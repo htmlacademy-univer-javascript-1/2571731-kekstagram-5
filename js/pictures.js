@@ -1,4 +1,5 @@
 import {objects} from './data.js';
+import {openBigPicture} from './big-picture.js';
 
 const pattern = document.querySelector('#picture').content.querySelector('.picture');
 const container = document.querySelector('.pictures');
@@ -10,6 +11,11 @@ const createPicture = (data) => {
   picture.querySelector('.picture__img').src = url;
   picture.querySelector('.picture__likes').textContent = likes;
   picture.querySelector('.picture__comments').textContent = comments.length;
+
+  picture.addEventListener('click', () => {
+    openBigPicture(data);
+  });
+
 
   return picture;
 };
