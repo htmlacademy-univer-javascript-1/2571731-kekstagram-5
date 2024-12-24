@@ -1,36 +1,24 @@
-import { showAlert } from './util.js';
+const BASE_URL = 'https://29.javascript.htmlacademy.pro/kekstagram';
 
-
-const getData = (onSuccess) => {
-  fetch('https://29.javascript.htmlacademy.pro/kekstagram/data')
-    .then((response) => response.json())
-    .then((posts) => {
-      if (!posts) {
-        throw new Error();
-      }
-      onSuccess(posts);
-    })
-    .catch(() => {
-      showAlert('Не удалось загрузить данные с сервера');
-    });
-};
-
-const sendData = (onSuccess, openSendDataErrorMessage, body) => {
-  fetch('https://29.javascript.htmlacademy.pro/kekstagram',
-    {
-      method: 'POST',
-      body,
-    },
-  )
+const getData = (onLoad, onFail) => {
+  fetch(`${BASE_URL}/data`)
     .then((response) => {
-      if(!response.ok) {
+      if (!response.ok) {
         throw new Error();
       }
-      onSuccess();
+      return response.json();
     })
-    .catch(() => {
-      openSendDataErrorMessage();
-    });
+    .then(onLoad)
+    .catch(onFail);
 };
 
-export { getData, sendData };
+const sendData = (onLoad, onFail, body) => {
+  fetch(BASE_URL, {
+    method: 'POST',
+    body: body,
+  })
+    .then(onLoad)
+    .catch(onFail);
+};
+
+export {getData, sendData};
