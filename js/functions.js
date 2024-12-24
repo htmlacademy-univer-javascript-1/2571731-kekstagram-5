@@ -1,25 +1,30 @@
-function checkStrLength(str, len){
-  if(str.Length <= len){
-    return true;
-  }
-  return false;
+function checkLength (string, length) {
+  return (string.length <= length);
 }
 
-function checkPalindrome(str){
-  const testStr1 = str.replaceAll(' ', '').toLowerCase();
-  const testStr2 = testStr1.split('').reverse().join('');
-  if(testStr1 === testStr2) {
-    return true;
+function isPalindrom (string) {
+  const newString = string.replaceAll(' ','').toLowerCase();
+  let stringToCompare = '';
+  for (let i = newString.length - 1; i >= 0 ; i--) {
+    stringToCompare += newString[i];
   }
-  return false;
+  return (stringToCompare === newString);
 }
 
-function makeDigit(str){
-  let digit = '';
-  for(let i=0; i<str.length;i++){
-    if(!Number.isNaN(+str[i])){
-      digit = digit + str[i];
+function parseLine (line) {
+  const string = (typeof line === 'number') ? String(line) : line;
+  let result = '';
+  for (let i = 0; i < string.length; i++) {
+    if (Number.isNaN(parseInt(string[i], 10)) === false) {
+      result += string[i];
     }
   }
-  return +digit;
+  if (result === '') {
+    return NaN;
+  }
+  return parseInt(result, 10);
 }
+
+checkLength('проверяемая строка', 18);
+isPalindrom('Лёша на полке клопа нашёл');
+parseLine('1 кефир, 0.5 батона');
