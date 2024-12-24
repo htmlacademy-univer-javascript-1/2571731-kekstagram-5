@@ -1,33 +1,35 @@
-const BASE_URL = 'https://29.javascript.htmlacademy.pro/code-and-magick';
-const Route = {
-  GET_DATA: '/data',
-  SEND_DATA: '/',
-};
+import { showAlert } from './util.js';
 
-const Method = {
-  GET: 'GET',
-  POST: 'POST',
-};
-
-const ErrorText = {
-  GET_DATA: 'Не удалось загрузить данные. Попробуйте обновить страницу',
-  SEND_DATA: 'Не удалось отправить форму. Попробуйте ещё раз',
-};
-
-const load = (route, errorText, method = Method.GET, body = null) =>
-  fetch(`${BASE_URL}${route}`, {method, body})
-    .then((response) => {
-      if (!response.ok) {
+const getData = (onSuccess) => {
+  fetch('https://29.javascript.htmlacademy.pro/kekstagram/data')
+    .then((response) => response.json())
+    .then((posts) => {
+      if (!posts) {
         throw new Error();
       }
-      return response.json();
+      onSuccess(posts);
     })
     .catch(() => {
-      throw new Error(errorText);
+      showAlert('Не удалось загрузить данные с сервера');
     });
+};
 
-const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA);
+const sendData = (onSuccess, openSendDataErrorMessage, body) => {
+  fetch('https://29.javascript.htmlacademy.pro/kekstagram',
+    {
+      method: 'POST',
+      body,
+    },
+  )
+    .then((response) => {
+      if(!response.ok) {
+        throw new Error();
+      }
+      onSuccess();
+    })
+    .catch(() => {
+      openSendDataErrorMessage();
+    });
+};
 
-const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body);
-
-export {getData, sendData};
+export { getData, sendData };

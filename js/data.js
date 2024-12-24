@@ -1,49 +1,49 @@
-import { getRandomArrayElement, getRandomInteger, createIdGenerator } from './utils.js';
+import { getRandomInteger, createUniqueRandomNumberList, getUniqueNumber } from './util.js';
 
-const COUNT_PHOTOS = 25;
-const COUNT_AVATARS = 6;
-const DESCRIPTIONS_PHOTOS = ['Красота', 'Какой же чудесный день сегодня!', 'Ну нежность',
-  'Просто посмотрите на эту сказку', 'Танцуйте. Влюбляйтесь. Творите.', 'Нет слов.',
-  'Без комментариев', 'Я и мои друзья', 'Семья!',
-  'Всех с праздником', 'Всем хорошего дня!',
-  'Очень интересный кадр', 'В моменте', 'Просто так', 'Любовь',
-  'Хочу тоже так', 'Ваууу', 'Ну вот и что это...',
-  'Солнышко', 'Мяу мяу мяу мяу', 'Оцените', 'Как вам такое?!',];
+const OBJECT_COUNT = 25;
 
-const MESSAGES_COMMENTS = ['Всё отлично!', 'В целом всё неплохо. Но не всё.',
-  'когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+const messages = ['Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
   'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
 
-const NAME_COMMENTS = ['Маша', 'Катя', 'Полина', 'Арсений', 'Алёна', 'Эдик', 'Матвей', 'Камилла', 'Олеся', 'Ксюша',
-  'Даша', 'Соня','Семён', 'Александр', 'Никита', 'Екатерина', 'Аннушка', 'Данил', 'Петя', 'Лёва',
-  'Влад', 'Денис', 'Алина', 'Максим', 'Женя', 'Рома', 'Ольга', 'Феликс', 'Эмма', 'Дмитрий'];
+const names = ['Иван', 'Настя', 'Андрей', 'Сергей', 'Лена', 'Михаил'];
 
-const createMessage = () => getRandomInteger(0, 1) ? getRandomArrayElement(MESSAGES_COMMENTS) : `${getRandomArrayElement(MESSAGES_COMMENTS)} ${getRandomArrayElement(MESSAGES_COMMENTS)}`;
+const descriptions = ['Хорошее место',
+  'Райское наслаждение',
+  'Незабываемые эмоции',
+  'Просто чудо',
+  'Это фантастика',
+  'Просто невероятно'];
 
-const generateIdComment = createIdGenerator();
-const createComments = function() {
-  const comments = [];
-  const count = getRandomInteger(0, 30);
-  for(let i = 0; i < count; i++) {
-    comments.push({
-      id:generateIdComment(),
-      avatar: `img/avatar-${getRandomInteger(1, COUNT_AVATARS)}.svg`,
-      message: createMessage(),
-      name: getRandomArrayElement(NAME_COMMENTS)
-    });
-  }
-  return comments;
-};
+const MIN_COMMENT_COUNT = 20;
+const MAX_COMMENT_COUNT = 30;
+const COMMENT_COUNT = getRandomInteger(MIN_COMMENT_COUNT, MAX_COMMENT_COUNT);
 
-const createPhoto = (photosIndex) => ({
-  id: photosIndex,
-  url: `photos/${photosIndex}.jpg`,
-  description: getRandomArrayElement(DESCRIPTIONS_PHOTOS),
-  likes: getRandomInteger(15, 200),
-  comments: createComments()
+const usedObjectId = [];
+const usedCommentId = [];
+const usedUrl = [];
+const objectIdList = createUniqueRandomNumberList(1, OBJECT_COUNT, OBJECT_COUNT);
+const commentIdList = createUniqueRandomNumberList(1, 999, COMMENT_COUNT);
+const objectUrlList = createUniqueRandomNumberList(1, OBJECT_COUNT, OBJECT_COUNT);
+
+const createComment = () => ({
+  id: getUniqueNumber(commentIdList, usedCommentId),
+  avatar: `img/avatar-${ String(getRandomInteger(1, 6)) }.svg`,
+  message: messages[getRandomInteger(0, 5)],
+  name: names[getRandomInteger(0, 5)],
 });
 
-const getPhotos = () => Array.from({length: COUNT_PHOTOS}, (_,photosIndex) => createPhoto(photosIndex + 1));
-export { getPhotos };
+const createObject = () => ({
+  id: getUniqueNumber(objectIdList, usedObjectId),
+  url: `photos/${ String(getUniqueNumber(objectUrlList, usedUrl)) }.jpg`,
+  description: descriptions[getRandomInteger(0, 5)],
+  likes: getRandomInteger(15, 200),
+  comments: Array.from({ length: getRandomInteger(MIN_COMMENT_COUNT, COMMENT_COUNT) }, createComment),
+});
+
+const objects = Array.from({length: OBJECT_COUNT}, createObject);
+
+export {objects};
