@@ -1408,3 +1408,16 @@ main {
 .hidden {
   display: none;
 }
+
+.load_error {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.548);
+  color: #ffe753;
+  font-weight: 700;
+}
