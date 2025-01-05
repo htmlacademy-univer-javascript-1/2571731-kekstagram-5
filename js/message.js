@@ -44,9 +44,14 @@ const showSuccessMessage = () => {
 };
 
 const showErrorMessage = () => {
-  body.addEventListener('keydown', (evt) => closeMessage(evt, '.error'));
-  body.addEventListener('click', (evt) => closeMessage(evt, '.error'));
-  showMessage('#error');
+  const showAlertElement = document.createElement('div');
+  showAlertElement.classList.add('load_error');
+  showAlertElement.textContent = 'Не удалось отправить форму. Пожалуйста, исправьте некорректные значения и попробуйте снова';
+  document.body.append(showAlertElement);
+
+  setTimeout(() => {
+    showAlertElement.remove();
+  }, 5000);
 };
 
 export {showLoadError, showSuccessMessage, showErrorMessage};
