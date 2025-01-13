@@ -3,6 +3,7 @@ const HTTPS = {
   'POST':'https://29.javascript.htmlacademy.pro/kekstagram1'
 };
 
+
 function createErrorDiv(error) {
   const errorDiv = document.createElement('div');
   errorDiv.classList.add('data-error');
