@@ -1,57 +1,35 @@
-import {isEscapeKey} from './util.js';
+import { onEscapePress } from './util.js';
 
+const SUCCESS_TEMPLATE = document.querySelector('#success').content.querySelector('.success');
+const ERROR_TEMPLATE = document.querySelector('#error').content.querySelector('.error');
 const body = document.querySelector('body');
 
+const createMessageHandler = (template) => () => {
+  const message = template.cloneNode(true);
+  const closeButton = message.querySelector('button');
 
-const closeMessage = (evt, messageClass) => {
-  const isClick = evt.type === 'click';
-  const isKeydown = evt.type === 'keydown' && isEscapeKey(evt);
+  const onDocumentKeydown = (evt) => onEscapePress(evt, closeMessage);
 
-  if (isClick || isKeydown) {
-    const message = document.querySelector(messageClass);
+  function closeMessage(){
+    message.remove();
+    document.removeEventListener('keydown', onDocumentKeydown);
+    document.removeEventListener('click', onDocumentClick);
+  }
 
-    if (message) {
-      if (isClick && (evt.target.classList.contains(`${messageClass.slice(1)}__button`) || !evt.target.classList.contains(`${messageClass.slice(1)}__inner`))) {
-        body.removeEventListener('click', closeMessage);
-        body.removeEventListener('keydown', closeMessage);
-        message.remove();
-      } else if (isKeydown) {
-        body.removeEventListener('click', closeMessage);
-        body.removeEventListener('keydown', closeMessage);
-        message.remove();
-      }
+  function onDocumentClick(evt){
+    if (evt.target === message) {
+      closeMessage();
     }
   }
-};
 
-const showMessage = (id) => {
-  const messageTemplate = document.querySelector(id).content;
-  const message = messageTemplate.cloneNode(true);
+  closeButton.addEventListener('click', closeMessage);
+  document.addEventListener('keydown', onDocumentKeydown);
+  document.addEventListener('click', onDocumentClick);
+
   body.appendChild(message);
 };
 
-const showLoadError = () => {
-  const showAlertElement = document.createElement('div');
-  showAlertElement.classList.add('load_error');
-  showAlertElement.textContent = 'Не удалось загрузить данные. Попробуйте обновить страницу';
-  document.body.append(showAlertElement);
-};
+const showSuccess = createMessageHandler(SUCCESS_TEMPLATE);
+const showError = createMessageHandler(ERROR_TEMPLATE);
 
-const showSuccessMessage = () => {
-  body.addEventListener('keydown', (evt) => closeMessage(evt, '.success'));
-  body.addEventListener('click', (evt) => closeMessage(evt, '.success'));
-  showMessage('#success');
-};
-
-const showErrorMessage = () => {
-  const showAlertElement = document.createElement('div');
-  showAlertElement.classList.add('load_error');
-  showAlertElement.textContent = 'Не удалось отправить форму. Пожалуйста, исправьте некорректные значения и попробуйте снова';
-  document.body.append(showAlertElement);
-
-  setTimeout(() => {
-    showAlertElement.remove();
-  }, 5000);
-};
-
-export {showLoadError, showSuccessMessage, showErrorMessage};
+export { showSuccess, showError };
